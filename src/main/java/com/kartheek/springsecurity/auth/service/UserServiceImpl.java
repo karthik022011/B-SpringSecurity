@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl  implements UserService{
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
     private UserInfoRepository userInfoRepository;
     @Override
     public RegisterReqDTO createUser(RegisterReqDTO registerReqDTO) {
