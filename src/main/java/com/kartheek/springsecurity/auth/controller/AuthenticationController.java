@@ -2,6 +2,7 @@ package com.kartheek.springsecurity.auth.controller;
 
 import com.kartheek.springsecurity.auth.dto.request.LoginReqDTO;
 import com.kartheek.springsecurity.auth.dto.request.RegisterReqDTO;
+import com.kartheek.springsecurity.auth.service.UserService;
 import com.kartheek.springsecurity.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,14 @@ public class AuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserService userService;
 
     @ResponseBody
     @PostMapping("/signup")
-    public ResponseEntity<String> createUser(@RequestBody RegisterReqDTO registerReqDTO){
-        // creating user object
+    public ResponseEntity<RegisterReqDTO> createUser(@RequestBody RegisterReqDTO registerReqDTO){
+        RegisterReqDTO savedUser = userService.createUser(registerReqDTO);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @ResponseBody
