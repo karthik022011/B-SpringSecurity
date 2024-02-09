@@ -37,7 +37,7 @@ public class SecurityAppConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                     .requestMatchers( "/api/v1/auth/**","/api/v1/auth/signup", "/h2-console/**").permitAll()
+                     .requestMatchers( "/api/v1/auth/**","/api/v1/auth/signup","/api/v1/auth/login", "/h2-console/**").permitAll()
                      .anyRequest().authenticated()
                     )
                 .headers(headers -> headers
