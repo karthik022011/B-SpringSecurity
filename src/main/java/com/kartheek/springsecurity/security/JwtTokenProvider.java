@@ -1,10 +1,14 @@
 package com.kartheek.springsecurity.security;
 
+import com.kartheek.springsecurity.auth.entity.RegisterUser;
+import com.kartheek.springsecurity.auth.repository.UserInfoRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,32 +16,45 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Component
-public class JwtTokenUtil {
+public class JwtTokenProvider {
 
-    public static final String SECRET = "5367566B59703373367639792F423F4528482B4D625165";
+    @Value("${app.jwt-secret}")
+    private String jwtSecret;
+    @Value("${app.jwt-expiration-milliseconds}")
+    private String jwtExpirationDate;
+
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     public String generateToken(String userName) {
         //All components(header, payload, signature) we call as claims
         Map<String, Object> claims = new HashMap<>();
+        Optional<RegisterUser> registerUser = userInfoRepository.findByEmail(userName);
+        Object[] roles = registerUser.get().getRoles().split(",");
+        claims.put("Roles", roles);
         return createToken(claims,userName);
     }
 
     private String createToken(Map<String, Object> claims, String userName){
-        return Jwts.builder()
+        Date currentDate = new Date();
+        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+        return Jwts.builder() //JWT class from the io.jsonwebtoken package
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setExpiration(expireDate)
                 //certificate
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
     private Key getSignKey() {
         //Generates sign key based on your own secret.
-        byte[] keyBytes= Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes= Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

@@ -3,7 +3,7 @@ package com.kartheek.springsecurity.auth.controller;
 import com.kartheek.springsecurity.auth.dto.request.LoginReqDTO;
 import com.kartheek.springsecurity.auth.dto.request.RegisterReqDTO;
 import com.kartheek.springsecurity.auth.service.UserService;
-import com.kartheek.springsecurity.security.JwtTokenUtil;
+import com.kartheek.springsecurity.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenProvider jwtTokenUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired

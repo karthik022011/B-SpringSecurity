@@ -1,20 +1,24 @@
 package com.kartheek.springsecurity.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name="users")
 public class RegisterUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String firstName;
     private String lastName;
     private String password;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dob;
     private String email;
     private String phoneNumber;
-    private String role;
-
+    private String roles;
 
     public Long getUserId() {
         return userId;
@@ -48,6 +52,14 @@ public class RegisterUser {
         this.password = password;
     }
 
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -64,11 +76,11 @@ public class RegisterUser {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }

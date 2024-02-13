@@ -1,12 +1,18 @@
 package com.kartheek.springsecurity.auth.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+
 public class RegisterReqDTO {
     private String firstName;
     private String lastName;
     private String password;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dob;
     private String email;
     private String phoneNumber;
-    private String role;
+    private String roles;
 
     public String getFirstName() {
         return firstName;
@@ -32,6 +38,14 @@ public class RegisterReqDTO {
         this.password = password;
     }
 
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -48,11 +62,11 @@ public class RegisterReqDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }
