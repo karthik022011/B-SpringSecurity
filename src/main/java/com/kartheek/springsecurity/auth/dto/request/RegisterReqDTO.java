@@ -1,6 +1,7 @@
 package com.kartheek.springsecurity.auth.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kartheek.springsecurity.validation.ValidateRoleType;
 
 import java.time.LocalDate;
 
@@ -12,6 +13,7 @@ public class RegisterReqDTO {
     private LocalDate dob;
     private String email;
     private String phoneNumber;
+    @ValidateRoleType
     private String roles;
 
     public String getFirstName() {
